@@ -139,7 +139,7 @@ const Info = () => {
         </div>
       </div>
       <div className="flex mt-8 mb-2 justify-center">
-        <button className="text-2xl bg-green-500 rounded-full py-3 px-8 hover:bg-green-600 font-semibold text-white text-center">
+        <button className="text-xl bg-green-500 rounded-full py-3 px-8 hover:bg-green-600 font-semibold text-white text-center">
           CAIRKAN PINJAMAN
         </button>
       </div>

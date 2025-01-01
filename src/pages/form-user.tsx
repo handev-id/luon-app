@@ -4,14 +4,33 @@ import Input from "../components/form/input";
 import { CostumerModel } from "../models/costumer";
 import { NumericFormat } from "react-number-format";
 import FormApp from "../components/form-app";
+import moment from "moment";
+import calculateMonthlyInstallment from "../utils/calc";
+import { useEffect } from "react";
 
 const FormUser = () => {
   const navigate = useNavigate();
-  const { handleSubmit, control: costumerFormControl } =
-    useForm<CostumerModel>();
+  const {
+    handleSubmit,
+    control: costumerFormControl,
+    setValue,
+    watch,
+    formState: { errors },
+  } = useForm<CostumerModel>();
 
   const onSubmit = (data: CostumerModel) => {
-    console.log(data);
+    const now = moment();
+    setValue("startAt", now.format("DD/MM/YYYY"));
+    setValue("endAt", now.add(data.duration, "month").format("DD/MM/YYYY"));
+  };
+
+  const checkInstallment = (data: CostumerModel) => {
+    const monthlyInstallment = calculateMonthlyInstallment(
+      data.amount,
+      0.5,
+      Number(data.duration)
+    );
+    setValue("installment", monthlyInstallment);
   };
 
   return (
@@ -25,7 +44,7 @@ const FormUser = () => {
     >
       <div className="flex justify-between items-center">
         <button
-          onClick={() => navigate(-1)}
+          onClick={() => navigate("/")}
           className="flex items-center font-bold hover:bg-gray-100/50 space-x-2 px-4 py-2 rounded"
         >
           <svg
@@ -71,7 +90,7 @@ const FormUser = () => {
           <Controller
             name="name"
             control={costumerFormControl}
-            rules={{ required: true }}
+            rules={{ required: "Nama Nasabah harus diisi" }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
@@ -81,10 +100,13 @@ const FormUser = () => {
               />
             )}
           />
+          {errors.name?.message && (
+            <p className="text-sm text-red-500 -mt-3">{errors.name.message}</p>
+          )}
           <Controller
             name="bankName"
             control={costumerFormControl}
-            rules={{ required: true }}
+            rules={{ required: "Nama Bank harus diisi" }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
@@ -94,23 +116,34 @@ const FormUser = () => {
               />
             )}
           />
+          {errors.bankName?.message && (
+            <p className="text-sm text-red-500 -mt-3">
+              {errors.bankName.message}
+            </p>
+          )}
           <Controller
             name="accountNumber"
             control={costumerFormControl}
-            rules={{ required: true }}
+            rules={{ required: "Nomor Rekening harus diisi" }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
                 onChange={onChange}
                 label="Nomor Rekening"
                 placeholder="Nomor Rekening"
+                type="number"
               />
             )}
           />
+          {errors.accountNumber?.message && (
+            <p className="text-sm text-red-500 -mt-3">
+              {errors.accountNumber.message}
+            </p>
+          )}
           <Controller
             name="amount"
             control={costumerFormControl}
-            rules={{ required: true }}
+            rules={{ required: "Jumlah harus diisi" }}
             render={({ field: { onChange, value } }) => (
               <>
                 <label
@@ -134,7 +167,31 @@ const FormUser = () => {
               </>
             )}
           />
+          {errors.amount?.message && (
+            <p className="text-sm text-red-500 -mt-3">
+              {errors.amount.message}
+            </p>
+          )}
           <Controller
+            name="paymentDate"
+            control={costumerFormControl}
+            rules={{ required: "Tanggal Pembayaran harus diisi" }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                value={value}
+                onChange={onChange}
+                label="Tanggal Pembayaran"
+                placeholder="Tanggal Pembayaran"
+                type="number"
+              />
+            )}
+          />
+          {errors.paymentDate?.message && (
+            <p className="text-sm text-red-500 -mt-3">
+              {errors.paymentDate.message}
+            </p>
+          )}
+          {/* <Controller
             name="startAt"
             control={costumerFormControl}
             rules={{ required: true }}
@@ -161,9 +218,68 @@ const FormUser = () => {
                 type={"date"}
               />
             )}
-          />
-          <button className="uppercase w-full py-3 text-lg my-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center font-semibold">
-            SUbmit
+          /> */}
+
+          <label className="font-semibold text-neutral-600">Jangka Waktu</label>
+          <div className="grid grid-cols-2 gap-4">
+            {[12, 24, 36, 48, 60].map((item) => (
+              <Controller
+                control={costumerFormControl}
+                name="duration"
+                rules={{ required: "Jangka Waktu harus diisi" }}
+                render={({ field: { onChange, value } }) => (
+                  <div
+                    onClick={() => onChange(item)}
+                    className={`rounded-xl flex-col text-xl text-center font-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 ${
+                      value === item
+                        ? "shadow-md bg-green-50 border border-green-500"
+                        : "border border-neutral-300"
+                    }`}
+                  >
+                    <div>{item}</div>
+                    <div>Bulan</div>
+                  </div>
+                )}
+              />
+            ))}
+          </div>
+          {errors.duration?.message && (
+            <p className="text-sm text-red-500 -mt-3">
+              {errors.duration.message}
+            </p>
+          )}
+
+          <div className="rounded-xl col-span-2 text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
+            <p className="font-semibold text-neutral-600">
+              Pembayaran Bulanan:
+            </p>
+            <h2 className="text-2xl font-semibold flex gap-2">
+              <span className="text-xl">Rp.</span>
+              <NumericFormat
+                thousandSeparator={true}
+                allowNegative={false}
+                value={
+                  watch("installment")
+                    ? (watch("installment") as number).toFixed(0)
+                    : 0
+                }
+                className="bg-transparent outline-none"
+                disabled
+              />
+            </h2>
+          </div>
+          <button
+            onClick={() => handleSubmit(checkInstallment)()}
+            type="button"
+            className="uppercase w-full py-3 text-sm mt-4 rounded-full border border-green-500 text-green-500 hover:text-white hover:bg-green-600 text-center font-semibold"
+          >
+            cek pembayaran bulanan
+          </button>
+          <button
+            type="submit"
+            className="uppercase w-full py-3 text-lg mb-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center font-semibold"
+          >
+            Submit
           </button>
         </form>
       </div>

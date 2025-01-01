@@ -12,4 +12,7 @@ export interface CostumerModel {
   endAt: string;
   //   accountName: string;
   accountNumber: string;
+  paymentDate: string;
+  duration: number;
+  installment: number;
 }
