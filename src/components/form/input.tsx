@@ -16,7 +16,7 @@ export default function Input({
 }: InputProps) {
   return (
     <div className="relative w-full">
-      <label className="font-semibold text-neutral-600" htmlFor={label}>
+      <label className="ubuntu-semibold text-neutral-600" htmlFor={label}>
         {label}
       </label>
       <input

@@ -38,7 +38,7 @@ const Info = () => {
       <div className="flex justify-between items-center">
         <button
           onClick={() => navigate("/")}
-          className="flex items-center font-bold hover:bg-gray-100/50 space-x-2 px-4 py-2 rounded"
+          className="flex items-center ubuntu-bold hover:bg-gray-100/50 space-x-2 px-4 py-2 rounded"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -74,10 +74,10 @@ const Info = () => {
               d="M12 4v16m8-8H4"
             />
           </svg>
-          <span className="font-bold">Nasabah Baru</span>
+          <span className="ubuntu-bold">Nasabah Baru</span>
         </button>
       </div>
-      <p className="font-bold text-xl text-green-900 text-center my-4">
+      <p className="ubuntu-bold text-xl text-green-900 text-center my-4">
         Proses Pencairan Pinjaman
       </p>
       <div className="p-4 flex gap-3 rounded-xl border border-green-500">
@@ -89,7 +89,7 @@ const Info = () => {
             />
           </svg>
         </div>
-        <div className="text-green-900 font-semibold">
+        <div className="text-green-900 ubuntu-semibold">
           <h2 className="text-xl">Nama: {costumer?.name || "Hendro"}</h2>
           <p>Nomor asuransi: {costumer?.insuranceNumber || ""}</p>
         </div>
@@ -109,7 +109,7 @@ const Info = () => {
               />
             </svg>
           </div>
-          <div className="text-green-900 font-semibold">
+          <div className="text-green-900 ubuntu-semibold">
             <h2 className="text-xl">{costumer?.name || "Hendro"}</h2>
             <p>
               {costumer?.bankName || "BRI"}{" "}
@@ -118,8 +118,8 @@ const Info = () => {
           </div>
         </div>
         <div className="mt-4">
-          <p className="font-semibold text-neutral-600">Jumlah Pencairan:</p>
-          <h2 className="text-4xl font-semibold flex gap-2">
+          <p className="ubuntu-semibold text-neutral-600">Jumlah Pencairan:</p>
+          <h2 className="text-4xl ubuntu-semibold flex gap-2">
             <span className="text-xl">Rp.</span>
             {costumer?.amount.toLocaleString("id-ID") || ""}
           </h2>
@@ -139,31 +139,33 @@ const Info = () => {
       <div className="mt-4 grid grid-cols-2 gap-4">
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Pengajuan:</p>
-          <h2 className="text-2xl font-semibold flex gap-2">
+          <h2 className="text-2xl ubuntu-semibold flex gap-2">
             {moment(costumer?.startAt).format("DD/MM/YYYY")}
           </h2>
         </div>
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Lama Pinjaman:</p>
-          <h2 className="text-2xl font-semibold flex gap-2">
+          <h2 className="text-2xl ubuntu-semibold flex gap-2">
             {costumer?.duration || 12} Bulan
           </h2>
         </div>
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Pembayaran:</p>
-          <h2 className="text-2xl font-semibold flex gap-2">
+          <h2 className="text-2xl ubuntu-semibold flex gap-2">
             {costumer?.paymentDate || 20}
           </h2>
         </div>
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Berakhir:</p>
-          <h2 className="text-2xl font-semibold flex gap-2">
+          <h2 className="text-2xl ubuntu-semibold flex gap-2">
             {moment(costumer?.endAt).format("DD/MM/YYYY")}
           </h2>
         </div>
         <div className="rounded-xl col-span-2 text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
-          <p className="font-semibold text-neutral-600">Pembayaran Bulanan:</p>
-          <h2 className="text-2xl font-semibold flex gap-2">
+          <p className="ubuntu-semibold text-neutral-600">
+            Pembayaran Bulanan:
+          </p>
+          <h2 className="text-2xl ubuntu-semibold flex gap-2">
             <span className="text-xl">Rp.</span>
             <NumericFormat
               thousandSeparator={true}
@@ -181,18 +183,18 @@ const Info = () => {
         <button
           onClick={onDisburse}
           type="button"
-          className="text-xl bg-green-500 rounded-full py-3 px-8 hover:bg-green-600 font-semibold text-white text-center"
+          className="text-xl bg-green-500 rounded-full py-3 px-8 hover:bg-green-600 ubuntu-semibold text-white text-center"
         >
           CAIRKAN PINJAMAN
         </button>
       </div>
 
       <Modal title="Pencairan Pinjaman" control={modal.control}>
-        <div className="text-lg font-semibold text-neutral-600 text-center mb-3">
+        <div className="text-lg ubuntu-semibold text-neutral-600 text-center mb-3">
           PERHATIAN
         </div>
         <div className="flex flex-col justify-center text-center">
-          <div className="text-red-500 font-medium mb-1">
+          <div className="text-red-500 ubuntu-regular mb-1">
             {app?.warning.title}
           </div>
           <p className="text-sm">{app?.warning.description}</p>
@@ -201,7 +203,7 @@ const Info = () => {
           <button
             onClick={() => modal.control.close()}
             type="button"
-            className="active:opacity-40 transition w-full duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md text-white bg-red-500 text-center font-semibold"
+            className="active:opacity-40 transition w-full duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md text-white bg-red-500 text-center ubuntu-semibold"
           >
             Kembali
           </button>

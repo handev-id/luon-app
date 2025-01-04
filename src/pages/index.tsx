@@ -52,8 +52,10 @@ const User = () => {
               className="w-16 rounded-full h-16"
             />
             <div className="text-start">
-              <h1 className="text-xl font-bold text-green-800">{app?.name}</h1>
-              <p className="font-semibold text-neutral-500">
+              <h1 className="text-xl ubuntu-bold text-green-800">
+                {app?.name}
+              </h1>
+              <p className="ubuntu-semibold text-neutral-500">
                 Aplikasi khusus admin
               </p>
             </div>
@@ -74,7 +76,7 @@ const User = () => {
                 className="w-[60px] object-cover h-[60px] rounded-full"
                 alt=""
               />
-              <span className="text-green-800 font-semibold text-xl">
+              <span className="text-green-800 ubuntu-semibold text-xl">
                 {item.label}
               </span>
             </button>

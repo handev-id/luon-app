@@ -76,7 +76,7 @@ const FormUser = () => {
       <div className="flex justify-between items-center">
         <button
           onClick={() => navigate("/")}
-          className="flex items-center font-bold hover:bg-gray-100/50 space-x-2 px-4 py-2 rounded"
+          className="flex items-center ubuntu-bold hover:bg-gray-100/50 space-x-2 px-4 py-2 rounded"
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -109,11 +109,11 @@ const FormUser = () => {
               d="M12 4v16m8-8H4"
             />
           </svg>
-          <span className="font-bold">Nasabah Baru</span>
+          <span className="ubuntu-bold">Nasabah Baru</span>
         </button> */}
       </div>
       <div className="bg-white shadow-lg rounded-lg p-4 mt-5 border border-green-200">
-        <p className="font-bold text-xl text-green-900 text-center my-4">
+        <p className="ubuntu-bold text-xl text-green-900 text-center my-4">
           Isi Data Nasabah
         </p>
 
@@ -178,7 +178,7 @@ const FormUser = () => {
             render={({ field: { onChange, value } }) => (
               <>
                 <label
-                  className="font-semibold text-neutral-600"
+                  className="ubuntu-semibold text-neutral-600"
                   htmlFor={"amount"}
                 >
                   Jumlah Pencairan
@@ -250,7 +250,9 @@ const FormUser = () => {
             )}
           /> */}
 
-          <label className="font-semibold text-neutral-600">Jangka Waktu</label>
+          <label className="ubuntu-semibold text-neutral-600">
+            Jangka Waktu
+          </label>
           <div className="grid grid-cols-2 gap-4">
             {(periodes?.sort((a, b) => a - b) || []).map((item, idx) => (
               <Controller
@@ -262,7 +264,7 @@ const FormUser = () => {
                   <button
                     type="button"
                     onClick={() => onChange(item)}
-                    className={`active:opacity-40 transition duration-300 ease-in-out rounded-xl flex-col text-xl text-center font-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 ${
+                    className={`active:opacity-40 transition duration-300 ease-in-out rounded-xl flex-col text-xl text-center ubuntu-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 ${
                       value === item
                         ? "shadow-md bg-green-50 border border-green-500"
                         : "border border-neutral-300"
@@ -278,7 +280,7 @@ const FormUser = () => {
               type="button"
               onClick={() => modalMonth.control.open()}
               className={
-                "active:opacity-40 transition duration-300 ease-in-out rounded-xl flex-col text-xl text-center font-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 border border-neutral-300"
+                "active:opacity-40 transition duration-300 ease-in-out rounded-xl flex-col text-xl text-center ubuntu-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 border border-neutral-300"
               }
             >
               <div>Tambah +</div>
@@ -292,10 +294,10 @@ const FormUser = () => {
           )}
 
           <div className="rounded-xl col-span-2 text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
-            <p className="font-semibold text-neutral-600">
+            <p className="ubuntu-semibold text-neutral-600">
               Pembayaran Bulanan:
             </p>
-            <h2 className="text-2xl font-semibold flex gap-2">
+            <h2 className="text-2xl ubuntu-semibold flex gap-2">
               <span className="text-xl">Rp.</span>
               <NumericFormat
                 thousandSeparator={true}
@@ -313,13 +315,13 @@ const FormUser = () => {
           <button
             onClick={() => handleSubmit(checkInstallment)()}
             type="button"
-            className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-sm mt-4 rounded-full border border-green-500 text-green-500 hover:text-white hover:bg-green-600 text-center font-semibold"
+            className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-sm mt-4 rounded-full border border-green-500 text-green-500 hover:text-white hover:bg-green-600 text-center ubuntu-semibold"
           >
             cek pembayaran bulanan
           </button>
           <button
             type="submit"
-            className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-lg mb-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center font-semibold"
+            className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-lg mb-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center ubuntu-semibold"
           >
             Submit
           </button>
@@ -348,13 +350,13 @@ const FormUser = () => {
             <button
               onClick={() => modalMonth.control.close()}
               type="button"
-              className="active:opacity-40 transition duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md text-red-500 hover:text-white hover:bg-red-500 border border-red-500 text-center font-semibold"
+              className="active:opacity-40 transition duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md text-red-500 hover:text-white hover:bg-red-500 border border-red-500 text-center ubuntu-semibold"
             >
               Tutup
             </button>
             <button
               type="submit"
-              className="active:opacity-40 transition duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md bg-green-500 text-white hover:bg-green-600 border border-green-500 text-center font-semibold"
+              className="active:opacity-40 transition duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md bg-green-500 text-white hover:bg-green-600 border border-green-500 text-center ubuntu-semibold"
             >
               Submit
             </button>

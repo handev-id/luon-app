@@ -26,7 +26,7 @@ const FormApp = () => {
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-4 mt-5 border border-green-200">
-      <p className="font-bold text-xl text-green-900 text-center mb-4">
+      <p className="ubuntu-bold text-xl text-green-900 text-center mb-4">
         Isi Data Aplikasi
       </p>
 
@@ -103,7 +103,7 @@ const FormApp = () => {
         )}
         <button
           type="submit"
-          className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-lg mb-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center font-semibold"
+          className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-lg mb-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center ubuntu-semibold"
         >
           Submit
         </button>
