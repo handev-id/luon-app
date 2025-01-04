@@ -5,6 +5,29 @@ import { useEffect, useState } from "react";
 import { AppModel } from "../models/costumer";
 import Service from "../utils/data-service";
 
+const data = [
+  {
+    icon: "https://static.vecteezy.com/system/resources/previews/022/188/209/non_2x/realistic-plus-icon-free-png.png",
+    label: "Pengajuan pinjaman",
+    page: "/info",
+  },
+  {
+    icon: "https://i.pinimg.com/originals/37/29/61/3729617452425f23b079bb0de458293a.png",
+    label: "Data nasabah",
+    page: "/form",
+  },
+  {
+    icon: "https://e7.pngegg.com/pngimages/930/741/png-clipart-round-green-check-mark-illustration-check-mark-bottle-material-green-tick-miscellaneous-angle.png",
+    label: "Data pembayaran",
+    page: "/",
+  },
+  {
+    icon: "https://www.freeiconspng.com/thumbs/office-icon/office-icon--insharepics-11.png",
+    label: "Kantor cabang",
+    page: "/",
+  },
+];
+
 const User = () => {
   const [app, setApp] = useState<AppModel | null>(null);
   const navigate = useNavigate();
@@ -38,28 +61,7 @@ const User = () => {
         </div>
 
         <div className="w-full max-w-sm space-y-4">
-          {[
-            {
-              icon: "https://static.vecteezy.com/system/resources/previews/022/188/209/non_2x/realistic-plus-icon-free-png.png",
-              label: "Pengajuan pinjaman",
-              page: "/info",
-            },
-            {
-              icon: "https://i.pinimg.com/originals/37/29/61/3729617452425f23b079bb0de458293a.png",
-              label: "Data nasabah",
-              page: "/form",
-            },
-            {
-              icon: "https://e7.pngegg.com/pngimages/930/741/png-clipart-round-green-check-mark-illustration-check-mark-bottle-material-green-tick-miscellaneous-angle.png",
-              label: "Data pembayaran",
-              page: "/",
-            },
-            {
-              icon: "https://www.freeiconspng.com/thumbs/office-icon/office-icon--insharepics-11.png",
-              label: "Kantor cabang",
-              page: "/",
-            },
-          ].map((item, idx) => (
+          {(data || []).map((item, idx) => (
             <button
               onClick={() => {
                 navigate(item.page);

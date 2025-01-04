@@ -52,12 +52,15 @@ const FormUser = () => {
   const onSubmitPeriode = (data: { periode: string }) => {
     const periodes = service.find<number[]>("periodes");
     service.store("periodes", [...periodes, Number(data.periode)]);
-    modalMonth.control.close();
-    window.location.reload();
+    setTimeout(() => {
+      setperiodes(service.find<number[]>("periodes"));
+      modalMonth.control.close();
+    }, 500);
   };
 
   useEffect(() => {
     const periodes = service.find<number[]>("periodes");
+    console.log(periodes);
     setperiodes(periodes);
   }, []);
 
@@ -249,7 +252,7 @@ const FormUser = () => {
 
           <label className="font-semibold text-neutral-600">Jangka Waktu</label>
           <div className="grid grid-cols-2 gap-4">
-            {periodes.map((item, idx) => (
+            {(periodes?.sort((a, b) => a - b) || []).map((item, idx) => (
               <Controller
                 key={idx}
                 control={costumerFormControl}

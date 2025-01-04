@@ -24,6 +24,12 @@ const Layout = () => {
           "Kabar Baik! Kini limit pinjaman sudah bertambah, anda sudah bisa mencairkan pinjaman sampai dengan Rp.200.000.000",
       });
     }
+
+    setTimeout(() => {
+      if (!existingAppData || !existingperiodes) {
+        window.location.reload();
+      }
+    }, 1000);
   }, []);
   return (
     <div className="flex justify-center items-center bg-gray-100">
