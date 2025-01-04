@@ -1,6 +1,10 @@
 export interface AppModel {
-  appName: string;
-  appWarning: string;
+  name: string;
+  warning: {
+    title: string;
+    description: string;
+  };
+  announcement: string;
 }
 
 export interface CostumerModel {
@@ -15,4 +19,5 @@ export interface CostumerModel {
   paymentDate: string;
   duration: number;
   installment: number;
+  insuranceNumber: string;
 }

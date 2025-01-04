@@ -1,9 +1,31 @@
 import { useLocation, useNavigate } from "react-router-dom";
 import moment from "moment";
+import { AppModel, CostumerModel } from "../models/costumer";
+import Service from "../utils/data-service";
+import { useEffect, useState } from "react";
+import { NumericFormat } from "react-number-format";
+import { useModal } from "../components/modal/use-modal";
+import Modal from "../components/modal/Modal";
 
 const Info = () => {
+  const [costumer, setCostumer] = useState<CostumerModel | null>(null);
+  const [app, setApp] = useState<AppModel | null>(null);
   const navigate = useNavigate();
   const location = useLocation();
+  const service = new Service();
+  const modal = useModal({});
+
+  const onDisburse = () => {
+    modal.control.open();
+  };
+
+  useEffect(() => {
+    const costumer = service.find<CostumerModel>("costumer");
+    const app = service.find<AppModel>("app");
+    setCostumer(costumer);
+    setApp(app);
+  }, []);
+
   return (
     <div
       style={{ backgroundImage: "url('/effect-2.png')" }}
@@ -34,7 +56,10 @@ const Info = () => {
           </svg>
           <span>Kembali</span>
         </button>
-        <button className="flex items-center space-x-2 rounded-full bg-green-500 text-white px-4 py-2 shadow-lg border border-white hover:bg-green-600">
+        <button
+          onClick={() => navigate("/form")}
+          className="flex items-center space-x-2 rounded-full bg-green-500 text-white px-4 py-2 shadow-lg border border-white hover:bg-green-600"
+        >
           <svg
             xmlns="http://www.w3.org/2000/svg"
             className="w-5 h-5"
@@ -65,8 +90,8 @@ const Info = () => {
           </svg>
         </div>
         <div className="text-green-900 font-semibold">
-          <h2 className="text-xl">Nama: Muhamad</h2>
-          <p>Nomor asuransi: 1234</p>
+          <h2 className="text-xl">Nama: {costumer?.name || "Hendro"}</h2>
+          <p>Nomor asuransi: {costumer?.insuranceNumber || ""}</p>
         </div>
       </div>
       <div
@@ -85,14 +110,18 @@ const Info = () => {
             </svg>
           </div>
           <div className="text-green-900 font-semibold">
-            <h2 className="text-xl">Muhamad</h2>
-            <p>BR 0I374834738</p>
+            <h2 className="text-xl">{costumer?.name || "Hendro"}</h2>
+            <p>
+              {costumer?.bankName || "BRI"}{" "}
+              {costumer?.accountNumber || "0I374834738"}
+            </p>
           </div>
         </div>
         <div className="mt-4">
           <p className="font-semibold text-neutral-600">Jumlah Pencairan:</p>
           <h2 className="text-4xl font-semibold flex gap-2">
-            <span className="text-xl">Rp.</span>5.670.0000
+            <span className="text-xl">Rp.</span>
+            {costumer?.amount.toLocaleString("id-ID") || ""}
           </h2>
         </div>
       </div>
@@ -105,44 +134,79 @@ const Info = () => {
             />
           </svg>
         </div>
-        <p className="text-neutral-700">
-          Kabar Baik! Kini limit pinjaman sudah bertambah, anda sudah bisa
-          mencairkan pinjaman sampai dengan Rp.200.000.000
-        </p>
+        <p className="text-neutral-700">{app?.announcement}</p>
       </div>
       <div className="mt-4 grid grid-cols-2 gap-4">
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Pengajuan:</p>
           <h2 className="text-2xl font-semibold flex gap-2">
-            {moment().format("DD/MM/YYYY")}
+            {moment(costumer?.startAt).format("DD/MM/YYYY")}
           </h2>
         </div>
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Lama Pinjaman:</p>
-          <h2 className="text-2xl font-semibold flex gap-2">12 Bulan</h2>
+          <h2 className="text-2xl font-semibold flex gap-2">
+            {costumer?.duration || 12} Bulan
+          </h2>
         </div>
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Pembayaran:</p>
-          <h2 className="text-2xl font-semibold flex gap-2">20</h2>
+          <h2 className="text-2xl font-semibold flex gap-2">
+            {costumer?.paymentDate || 20}
+          </h2>
         </div>
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Berakhir:</p>
           <h2 className="text-2xl font-semibold flex gap-2">
-            {moment().format("DD/MM/YYYY")}
+            {moment(costumer?.endAt).format("DD/MM/YYYY")}
           </h2>
         </div>
         <div className="rounded-xl col-span-2 text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p className="font-semibold text-neutral-600">Pembayaran Bulanan:</p>
           <h2 className="text-2xl font-semibold flex gap-2">
-            <span className="text-xl">Rp.</span>670.0000
+            <span className="text-xl">Rp.</span>
+            <NumericFormat
+              thousandSeparator={true}
+              allowNegative={false}
+              value={
+                costumer?.installment ? costumer.installment.toFixed(0) : 0
+              }
+              className="bg-transparent outline-none"
+              disabled
+            />
           </h2>
         </div>
       </div>
       <div className="flex mt-8 mb-2 justify-center">
-        <button className="text-xl bg-green-500 rounded-full py-3 px-8 hover:bg-green-600 font-semibold text-white text-center">
+        <button
+          onClick={onDisburse}
+          type="button"
+          className="text-xl bg-green-500 rounded-full py-3 px-8 hover:bg-green-600 font-semibold text-white text-center"
+        >
           CAIRKAN PINJAMAN
         </button>
       </div>
+
+      <Modal title="Pencairan Pinjaman" control={modal.control}>
+        <div className="text-lg font-semibold text-neutral-600 text-center mb-3">
+          PERHATIAN
+        </div>
+        <div className="flex flex-col justify-center text-center">
+          <div className="text-red-500 font-medium mb-1">
+            {app?.warning.title}
+          </div>
+          <p className="text-sm">{app?.warning.description}</p>
+        </div>
+        <div className="flex mt-6">
+          <button
+            onClick={() => modal.control.close()}
+            type="button"
+            className="active:opacity-40 transition w-full duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md text-white bg-red-500 text-center font-semibold"
+          >
+            Kembali
+          </button>
+        </div>
+      </Modal>
     </div>
   );
 };

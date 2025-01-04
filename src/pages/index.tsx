@@ -1,12 +1,19 @@
-import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import Info from "./info";
 import FormUser from "./form-user";
+import { useEffect, useState } from "react";
+import { AppModel } from "../models/costumer";
+import Service from "../utils/data-service";
 
 const User = () => {
+  const [app, setApp] = useState<AppModel | null>(null);
   const navigate = useNavigate();
+  const service = new Service();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    const app = service.find<AppModel>("app");
+    setApp(app);
+  }, []);
 
   return (
     <>
@@ -22,9 +29,7 @@ const User = () => {
               className="w-16 rounded-full h-16"
             />
             <div className="text-start">
-              <h1 className="text-xl font-bold text-green-800">
-                KSP DANA RAHAYU
-              </h1>
+              <h1 className="text-xl font-bold text-green-800">{app?.name}</h1>
               <p className="font-semibold text-neutral-500">
                 Aplikasi khusus admin
               </p>
@@ -60,7 +65,7 @@ const User = () => {
                 navigate(item.page);
               }}
               key={idx}
-              className="flex items-center p-4 w-full border border-green-400 rounded-xl gap-4 hover:bg-green-100 transition"
+              className="active:opacity-40 transition duration-300 ease-in-out flex items-center p-4 w-full border border-green-400 rounded-xl gap-4 hover:bg-green-100"
             >
               <img
                 src={item.icon}

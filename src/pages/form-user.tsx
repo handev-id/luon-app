@@ -6,10 +6,17 @@ import { NumericFormat } from "react-number-format";
 import FormApp from "../components/form-app";
 import moment from "moment";
 import calculateMonthlyInstallment from "../utils/calc";
-import { useEffect } from "react";
+import Service from "../utils/data-service";
+import { useModal } from "../components/modal/use-modal";
+import { useEffect, useState } from "react";
+import Modal from "../components/modal/Modal";
 
 const FormUser = () => {
+  const [periodes, setperiodes] = useState<number[]>([]);
+  const service = new Service();
   const navigate = useNavigate();
+  const modalMonth = useModal({});
+
   const {
     handleSubmit,
     control: costumerFormControl,
@@ -18,10 +25,19 @@ const FormUser = () => {
     formState: { errors },
   } = useForm<CostumerModel>();
 
+  const { handleSubmit: handleSubmitPeriode, control: periodeFormControl } =
+    useForm<{ periode: string }>();
+
   const onSubmit = (data: CostumerModel) => {
     const now = moment();
     setValue("startAt", now.format("DD/MM/YYYY"));
     setValue("endAt", now.add(data.duration, "month").format("DD/MM/YYYY"));
+    checkInstallment(data);
+
+    setTimeout(() => {
+      service.store<CostumerModel>("costumer", { ...watch() });
+      window.location.href = "/info";
+    }, 500);
   };
 
   const checkInstallment = (data: CostumerModel) => {
@@ -32,6 +48,18 @@ const FormUser = () => {
     );
     setValue("installment", monthlyInstallment);
   };
+
+  const onSubmitPeriode = (data: { periode: string }) => {
+    const periodes = service.find<number[]>("periodes");
+    service.store("periodes", [...periodes, Number(data.periode)]);
+    modalMonth.control.close();
+    window.location.reload();
+  };
+
+  useEffect(() => {
+    const periodes = service.find<number[]>("periodes");
+    setperiodes(periodes);
+  }, []);
 
   return (
     <div
@@ -131,7 +159,7 @@ const FormUser = () => {
                 onChange={onChange}
                 label="Nomor Rekening"
                 placeholder="Nomor Rekening"
-                type="number"
+                type="numeric"
               />
             )}
           />
@@ -182,7 +210,6 @@ const FormUser = () => {
                 onChange={onChange}
                 label="Tanggal Pembayaran"
                 placeholder="Tanggal Pembayaran"
-                type="number"
               />
             )}
           />
@@ -222,15 +249,17 @@ const FormUser = () => {
 
           <label className="font-semibold text-neutral-600">Jangka Waktu</label>
           <div className="grid grid-cols-2 gap-4">
-            {[12, 24, 36, 48, 60].map((item) => (
+            {periodes.map((item, idx) => (
               <Controller
+                key={idx}
                 control={costumerFormControl}
                 name="duration"
                 rules={{ required: "Jangka Waktu harus diisi" }}
                 render={({ field: { onChange, value } }) => (
-                  <div
+                  <button
+                    type="button"
                     onClick={() => onChange(item)}
-                    className={`rounded-xl flex-col text-xl text-center font-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 ${
+                    className={`active:opacity-40 transition duration-300 ease-in-out rounded-xl flex-col text-xl text-center font-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 ${
                       value === item
                         ? "shadow-md bg-green-50 border border-green-500"
                         : "border border-neutral-300"
@@ -238,10 +267,20 @@ const FormUser = () => {
                   >
                     <div>{item}</div>
                     <div>Bulan</div>
-                  </div>
+                  </button>
                 )}
               />
             ))}
+            <button
+              type="button"
+              onClick={() => modalMonth.control.open()}
+              className={
+                "active:opacity-40 transition duration-300 ease-in-out rounded-xl flex-col text-xl text-center font-semibold gap-2 cursor-pointer hover:border-green-500 hover:shadow-md text-neutral-600 px-4 py-3 hover:bg-green-50 border border-neutral-300"
+              }
+            >
+              <div>Tambah +</div>
+              <div>Bulan</div>
+            </button>
           </div>
           {errors.duration?.message && (
             <p className="text-sm text-red-500 -mt-3">
@@ -271,13 +310,13 @@ const FormUser = () => {
           <button
             onClick={() => handleSubmit(checkInstallment)()}
             type="button"
-            className="uppercase w-full py-3 text-sm mt-4 rounded-full border border-green-500 text-green-500 hover:text-white hover:bg-green-600 text-center font-semibold"
+            className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-sm mt-4 rounded-full border border-green-500 text-green-500 hover:text-white hover:bg-green-600 text-center font-semibold"
           >
             cek pembayaran bulanan
           </button>
           <button
             type="submit"
-            className="uppercase w-full py-3 text-lg mb-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center font-semibold"
+            className="active:opacity-40 transition duration-300 ease-in-out uppercase w-full py-3 text-lg mb-4 rounded-full bg-green-500 text-white hover:bg-green-600 text-center font-semibold"
           >
             Submit
           </button>
@@ -285,6 +324,40 @@ const FormUser = () => {
       </div>
 
       <FormApp />
+
+      <Modal title="Tambah Jangka Waktu" control={modalMonth.control}>
+        <form onSubmit={handleSubmitPeriode(onSubmitPeriode)}>
+          <Controller
+            name="periode"
+            control={periodeFormControl}
+            rules={{ required: true }}
+            render={({ field: { onChange, value } }) => (
+              <Input
+                value={value}
+                onChange={onChange}
+                label="Jangka Waktu"
+                placeholder="Contoh: 12"
+                type="numeric"
+              />
+            )}
+          />
+          <div className="flex justify-between mt-6">
+            <button
+              onClick={() => modalMonth.control.close()}
+              type="button"
+              className="active:opacity-40 transition duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md text-red-500 hover:text-white hover:bg-red-500 border border-red-500 text-center font-semibold"
+            >
+              Tutup
+            </button>
+            <button
+              type="submit"
+              className="active:opacity-40 transition duration-300 ease-in-out uppercase py-1.5 px-2 text-sm rounded-md bg-green-500 text-white hover:bg-green-600 border border-green-500 text-center font-semibold"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
+      </Modal>
     </div>
   );
 };
