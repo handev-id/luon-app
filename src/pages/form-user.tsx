@@ -32,7 +32,6 @@ const FormUser = () => {
     const now = moment();
     setValue("startAt", now.format("DD/MM/YYYY"));
     setValue("endAt", now.add(data.duration, "month").format("DD/MM/YYYY"));
-    checkInstallment(data);
 
     setTimeout(() => {
       service.store<CostumerModel>("costumer", { ...watch() });
@@ -300,15 +299,18 @@ const FormUser = () => {
             <h2 className="text-2xl ubuntu-semibold flex gap-2">
               <span className="text-xl">Rp.</span>
               <NumericFormat
+                onValueChange={(e) =>
+                  setValue("installment", e.floatValue as number)
+                }
                 thousandSeparator={true}
                 allowNegative={false}
+                onChange={(e) => console.log(e)}
                 value={
                   watch("installment")
                     ? (watch("installment") as number).toFixed(0)
                     : 0
                 }
-                className="bg-transparent outline-none"
-                disabled
+                className="bg-transparent outline-none border border-green-400 p-3 rounded-lg"
               />
             </h2>
           </div>
