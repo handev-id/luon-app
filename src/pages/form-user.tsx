@@ -29,7 +29,8 @@ const FormUser = () => {
     useForm<{ periode: string }>();
 
   const onSubmit = (data: CostumerModel) => {
-    const now = moment();
+    const now = moment(data.paymentDate);
+    setValue("paymentDate", `${now.date()}`);
     setValue("startAt", now.format("DD/MM/YYYY"));
     setValue("endAt", now.add(data.duration, "month").format("DD/MM/YYYY"));
 
@@ -38,6 +39,8 @@ const FormUser = () => {
       window.location.href = "/info";
     }, 500);
   };
+
+  console.log(watch());
 
   const checkInstallment = (data: CostumerModel) => {
     const monthlyInstallment = calculateMonthlyInstallment(
@@ -202,7 +205,7 @@ const FormUser = () => {
               {errors.amount.message}
             </p>
           )}
-          <Controller
+          {/* <Controller
             name="paymentDate"
             control={costumerFormControl}
             rules={{ required: "Tanggal Pembayaran harus diisi" }}
@@ -219,22 +222,22 @@ const FormUser = () => {
             <p className="text-sm text-red-500 -mt-3">
               {errors.paymentDate.message}
             </p>
-          )}
-          {/* <Controller
-            name="startAt"
+          )} */}
+          <Controller
+            name="paymentDate"
             control={costumerFormControl}
             rules={{ required: true }}
             render={({ field: { onChange, value } }) => (
               <Input
                 value={value}
                 onChange={onChange}
-                label="Tanggal Mulai"
-                placeholder={"Tanggal Mulai"}
+                label="Tanggal Pembayaran"
+                placeholder={"Tanggal Pembayaran"}
                 type={"date"}
               />
             )}
           />
-          <Controller
+          {/* <Controller
             name="endAt"
             control={costumerFormControl}
             rules={{ required: true }}
@@ -310,7 +313,7 @@ const FormUser = () => {
                     ? (watch("installment") as number).toFixed(0)
                     : 0
                 }
-                className="bg-transparent outline-none border border-green-400 p-3 rounded-lg"
+                className="bg-transparent outline-none border border-green-400 p-3 rounded-lg w-full"
               />
             </h2>
           </div>

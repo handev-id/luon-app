@@ -1,5 +1,4 @@
 import { useLocation, useNavigate } from "react-router-dom";
-import moment from "moment";
 import { AppModel, CostumerModel } from "../models/costumer";
 import Service from "../utils/data-service";
 import { useEffect, useState } from "react";
@@ -140,7 +139,7 @@ const Info = () => {
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Pengajuan:</p>
           <h2 className="text-2xl ubuntu-semibold flex gap-2">
-            {moment(costumer?.startAt).format("DD/MM/YYYY")}
+            {costumer?.startAt}
           </h2>
         </div>
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
@@ -158,7 +157,7 @@ const Info = () => {
         <div className="rounded-xl text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
           <p>Tanggal Berakhir:</p>
           <h2 className="text-2xl ubuntu-semibold flex gap-2">
-            {moment(costumer?.endAt).format("DD/MM/YYYY")}
+            {costumer?.endAt}
           </h2>
         </div>
         <div className="rounded-xl col-span-2 text-neutral-600 px-4 py-3 border border-green-500 bg-green-50">
