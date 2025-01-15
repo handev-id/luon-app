@@ -3,6 +3,7 @@ export interface AppModel {
   warning: {
     title: string;
     description: string;
+    status: "success" | "fail";
   };
   announcement: string;
 }

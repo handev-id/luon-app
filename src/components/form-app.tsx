@@ -12,6 +12,8 @@ const FormApp = () => {
     reset,
     handleSubmit,
     formState: { errors },
+    watch,
+    setValue,
   } = useForm<AppModel>();
 
   const onSubmit = (data: AppModel) => {
@@ -23,6 +25,8 @@ const FormApp = () => {
     const appData = service.find<AppModel>("app");
     reset(appData);
   }, []);
+
+  console.log(watch("warning.status"));
 
   return (
     <div className="bg-white shadow-lg rounded-lg p-4 mt-5 border border-green-200">
@@ -81,6 +85,47 @@ const FormApp = () => {
         {errors.warning?.description?.message && (
           <p className="text-sm text-red-500 -mt-3">
             {errors.warning.description.message}
+          </p>
+        )}
+        <div className="flex gap-4">
+          <div className="flex gap-2 items-center">
+            <input
+              name="success"
+              checked={watch("warning.status") === "success"}
+              onChange={(e) => {
+                const value = e.target.checked;
+                if (value) {
+                  setValue("warning.status", "success");
+                }
+              }}
+              type="radio"
+              className="w-5 h-5"
+            />
+            <label htmlFor="success" className="font-semibold font-ubuntu">
+              Berhasil
+            </label>
+          </div>
+          <div className="flex gap-2 items-center">
+            <input
+              name="fail"
+              checked={watch("warning.status") === "fail"}
+              onChange={(e) => {
+                const value = e.target.checked;
+                if (value) {
+                  setValue("warning.status", "fail");
+                }
+              }}
+              type="radio"
+              className="w-5 h-5"
+            />
+            <label htmlFor="fail" className="font-semibold font-ubuntu">
+              Gagal
+            </label>
+          </div>
+        </div>
+        {errors.announcement?.message && (
+          <p className="text-sm text-red-500 -mt-3">
+            {errors.announcement.message}
           </p>
         )}
         <Controller

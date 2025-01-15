@@ -5,17 +5,25 @@ import { useEffect, useState } from "react";
 import { NumericFormat } from "react-number-format";
 import { useModal } from "../components/modal/use-modal";
 import Modal from "../components/modal/Modal";
+import { FaCheck } from "react-icons/fa";
+import { IoMdClose } from "react-icons/io";
+import Loading from "../components/loading";
 
 const Info = () => {
   const [costumer, setCostumer] = useState<CostumerModel | null>(null);
   const [app, setApp] = useState<AppModel | null>(null);
+  const [fakeLoad, setFakeLoad] = useState<boolean>(false);
   const navigate = useNavigate();
   const location = useLocation();
   const service = new Service();
   const modal = useModal({});
 
   const onDisburse = () => {
-    modal.control.open();
+    setFakeLoad(true);
+    setTimeout(() => {
+      modal.control.open();
+      setFakeLoad(false);
+    }, 2000);
   };
 
   useEffect(() => {
@@ -34,6 +42,7 @@ const Info = () => {
           : "absolute pb-16 right-[-100%] py-6 px-4 transition-all bg-cover duration-300 top-0 w-full h-screen overflow-y-scroll bg-white bg-no-repeat"
       }
     >
+      {fakeLoad && <Loading />}
       <div className="flex justify-between items-center">
         <button
           onClick={() => navigate("/")}
@@ -189,11 +198,21 @@ const Info = () => {
       </div>
 
       <Modal title="Pencairan Pinjaman" control={modal.control}>
-        <div className="text-lg ubuntu-semibold text-neutral-600 text-center mb-3">
-          PERHATIAN
+        <div
+          className={`text-4xl flex justify-center items-center mx-auto h-16 w-16 rounded-full text-center mb-3 ${
+            app?.warning.status === "success"
+              ? "text-green-600 bg-green-100"
+              : "bg-red-50 text-red-500"
+          }`}
+        >
+          {app?.warning.status === "success" ? <FaCheck /> : <IoMdClose />}
         </div>
         <div className="flex flex-col justify-center text-center">
-          <div className="text-red-500 ubuntu-regular mb-1">
+          <div
+            className={`${
+              app?.warning.status === "fail" ? "text-red-500" : "text-green-600"
+            } ubuntu-regular mb-1`}
+          >
             {app?.warning.title}
           </div>
           <p className="text-sm">{app?.warning.description}</p>

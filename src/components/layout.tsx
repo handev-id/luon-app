@@ -19,6 +19,7 @@ const Layout = () => {
           title: "PENCAIRAN DANA TIDAK DAPAT DIPROSES",
           description:
             "Nasabah baru wajib mempunyai asuransi jiwa, Pastikan telah mendaftar asuransi jiwa sebelum anda mencoba pencairan pinjaman ini kembali",
+          status: "success",
         },
         announcement:
           "Kabar Baik! Kini limit pinjaman sudah bertambah, anda sudah bisa mencairkan pinjaman sampai dengan Rp.200.000.000",
